@@ -1,7 +1,7 @@
 
 class Jeton:
     def __init__(self, couleur):
-        # Initialisez ici les attributs du jeton (par exemple, couleur)
-        pass
+        self.couleur = couleur
 
-    # Ajoutez d'autres méthodes nécessaires
+    def __str__(self):
+        return f"Jeton de couleur {self.couleur}"

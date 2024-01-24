@@ -1,12 +1,24 @@
-# Joueur.py
+from jeton import Jeton
 
 class Joueur:
     def __init__(self, nom, couleur):
-        # Initialisez ici les attributs du joueur (par exemple, nom, couleur)
-        pass
+        self.nom = nom
+        self.couleur = couleur
+        self.jetons = []  # Liste pour stocker les jetons du joueur
 
-    def faire_coup(self):
-        # Méthode pour que le joueur fasse un coup
-        pass
+    def creer_jetons(self, nombre_jetons):
+        # Méthode pour créer le nombre spécifié de jetons pour le joueur
+        for _ in range(nombre_jetons):
+            self.jetons.append(Jeton(couleur = self.couleur))
 
-    # Ajoutez d'autres méthodes nécessaires
+    def __str__(self):
+        return f"Joueur n°{self.nom} - {self.couleur}"
+
+'''
+class Joueur:
+    def __init__(self, nom):
+        self.nom = nom
+
+    def __str__(self):
+        return f"Joueur n°{self.nom}"
+'''

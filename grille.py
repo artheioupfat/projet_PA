@@ -10,7 +10,11 @@ class Grille:
     def afficher_grille(self):
         for row in self.grid:
             print('|  '.join(str(cell) for cell in row))
-        print('-' * 29)                        # Après avoir affiché toutes les lignes de la grille, une ligne de séparation est affichée. Cela ajoute une ligne horizontale de 29 caractères '-' pour séparer visuellement les différentes lignes de la grille.
+        print('-' * 29)    # Après avoir affiché toutes les lignes de la grille, une ligne de séparation est affichée. Cela ajoute une ligne horizontale de 29 caractères '-' pour séparer visuellement les différentes lignes de la grille.
+        self.numero_colonne()
+
+    def numero_colonne(self):
+        print("   ".join(str(i ) for i in range(7)))
 
     def est_colonne_valide(self, colonne):
         return 0 <= colonne < 7 and self.grid[0][colonne].occupant is None    #verifie si on ne choisit pas une colonne qui n'existe pas et on vérifie également qu'il reste une place

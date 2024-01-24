@@ -1,5 +1,6 @@
 from jeton import Jeton
 from joueur import Joueur
+from fenetre import GameView
 
 jeton_rouge = Jeton("rouge")
 jeton_jaune = Jeton("jaune")
@@ -29,3 +30,5 @@ def main():
 if __name__ == "__main__":
     main()
 '''
+
+game_view = GameView()

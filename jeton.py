@@ -1,7 +1,11 @@
 
+
 class Jeton:
-    def __init__(self, couleur):
-        self.couleur = couleur
+    def __init__(self):
+        self.occupant = None
+
+    def placer(self, joueur):
+        self.occupant = joueur.symbole
 
     def __str__(self):
-        return f"Jeton de couleur {self.couleur}"
+        return self.occupant if self.occupant else ' '

@@ -21,12 +21,12 @@ class GameView:
         taille_plateau_de_jeu = self.board_picture.get_size()
         # stocker cette taille
         self.size = (taille_plateau_de_jeu[0] * 1, taille_plateau_de_jeu[1])
-        print(self.size)
+        #print(self.size)
         self.colonne = taille_plateau_de_jeu[0]/7
-        print(self.colonne)
+        #print(self.colonne)
         # Définir les limites des colonnes
-        self.limites_colonnes = [i * self.colonne for i in range(7)]
-        print(self.limites_colonnes)
+        self.limites_colonnes = [i * self.colonne for i in range(8)]
+        #print(self.limites_colonnes)
         # setter la taille de la fenetre jeu au meme dimension que celle du plateau de jeu (image)
         self.screen = pygame.display.set_mode(self.size)
         self.screen.blit(self.board_picture, (0, 0))
@@ -49,7 +49,8 @@ class GameView:
                     # Vérifier dans quelle colonne la souris a été cliquée
                     x, y = event.pos
                     colonne_cliquee = self.get_colonne_cliquee(x)
-                    print(f"Colonne cliquée : {colonne_cliquee}")
+                    #print(f"Colonne cliquée : {colonne_cliquee}")
+                    self.placer_pion(colonne_cliquee)
 
         pygame.quit()
 
@@ -60,4 +61,12 @@ class GameView:
                 return i
         num_colonne_clic = len(self.limites_colonnes) - 1
         return num_colonne_clic
-#à mettre dans le main pour executer la fenêtre
+
+    def placer_pion(self, colonne):
+        # Calculer les coordonnées pour placer l'image en bas de la colonne
+        x = colonne * self.colonne + (self.colonne // 2) - (self.yellowChip.get_width() // 2)
+        y = self.size[1] - self.yellowChip.get_height()
+
+        # Afficher l'image du pion (jaune pour l'exemple)
+        self.screen.blit(self.yellowChip, (x, y))
+        pygame.display.flip()

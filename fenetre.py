@@ -1,12 +1,15 @@
 import pygame
 import os
 from pygame.locals import *
-
+from jeu import Jeu
 
 class GameView:
     IMAGE_DIRECTORY = "images"
 
     def __init__(self):
+        self.ma_classe_jeu = Jeu()
+
+
         self.gamer = 1
         #self.gameBoard = GameBoard()
         self.pyGame = pygame
@@ -21,12 +24,12 @@ class GameView:
         taille_plateau_de_jeu = self.board_picture.get_size()
         # stocker cette taille
         self.size = (taille_plateau_de_jeu[0] * 1, taille_plateau_de_jeu[1])
-        print(self.size)
+        #print(self.size)
         self.colonne = taille_plateau_de_jeu[0]/7
-        print(self.colonne)
+        #print(self.colonne)
         # Définir les limites des colonnes
         self.limites_colonnes = [i * self.colonne for i in range(8)]
-        print(self.limites_colonnes)
+        #print(self.limites_colonnes)
         # setter la taille de la fenetre jeu au meme dimension que celle du plateau de jeu (image)
         self.screen = pygame.display.set_mode(self.size)
         self.screen.blit(self.board_picture, (0, 0))
@@ -39,6 +42,7 @@ class GameView:
         # Police pour le jeu
         #self.font = pygame.font.Font("freesansbold.ttf", 15)
 
+        jeu = Jeu()
         continuer = True
         while continuer:
             for event in self.pyGame.event.get():
@@ -49,9 +53,31 @@ class GameView:
                     # Vérifier dans quelle colonne la souris a été cliquée
                     x, y = event.pos
                     colonne_cliquee = self.get_colonne_cliquee(x)
-                    print(f"Colonne cliquée : {colonne_cliquee}")
+                    #print(f"Colonne cliquée : {colonne_cliquee}")
+                    self.placer_pion(colonne_cliquee-1)
+                    jeu.jouer(colonne_cliquee-1)
+                    jeu.grille.afficher_grille()
+                    print("Colonne clique {colonne_cliquee}")
+
 
         pygame.quit()
+
+
+        '''
+        while True:
+            jeu.grille.afficher_grille()
+
+            # colonne = int(input(f"Joueur {jeu.joueur_actuel.symbole}, choisissez une colonne (0-6) : "))
+            colonne = colonne_cliquee
+            print("Colonne clique {colonne}")
+            if jeu.jouer(colonne):
+                jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
+                break  # Le jeu est terminé, sortir de la boucle
+
+        print("Fin du jeu.")
+        '''
+
+
 
     def get_colonne_cliquee(self, x):
         # Trouver la colonne dans laquelle la souris a été cliquée
@@ -60,4 +86,25 @@ class GameView:
                 return i
         num_colonne_clic = len(self.limites_colonnes) - 1
         return num_colonne_clic
-#à mettre dans le main pour executer la fenêtre
+
+    def placer_pion(self, colonne):
+        joueur_actuel = self.ma_classe_jeu.joueur_actuel
+        if joueur_actuel == self.ma_classe_jeu.joueur1:
+            couleur = self.redChip
+        else:
+            couleur = self.yellowChip
+
+        # Calculer les coordonnées pour placer l'image en bas de la colonne
+        x = colonne * self.colonne + (self.colonne // 2) - (couleur.get_width() // 2)
+        y = self.size[1] - couleur.get_height()
+
+        # Afficher l'image du pion
+        self.screen.blit(couleur, (x, y))
+        pygame.display.flip()
+
+        # Appeler la méthode jouer de la classe Jeu
+        self.ma_classe_jeu.jouer(colonne)
+
+        # (Optionnel) Afficher la grille après le coup
+        self.ma_classe_jeu.grille.afficher_grille()
+

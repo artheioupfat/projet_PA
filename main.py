@@ -20,25 +20,12 @@ if __name__ == "__main__":
 
 
 def main():
-    jeu = Jeu()
-    #game_view = GameView()
+    #jeu = Jeu()
+    game_view = GameView()
 
 
 
-    while True:
-        jeu.grille.afficher_grille()
 
-        try:
-            colonne = int(input(f"Joueur {jeu.joueur_actuel.symbole}, choisissez une colonne (0-6) : "))
-        except ValueError:
-            print("Veuillez entrer un numéro de colonne valide.")
-            continue  # Revenir au début de la boucle
-
-        if jeu.jouer(colonne):
-            jeu.grille.afficher_grille()
-            break  # Le jeu est terminé, sortir de la boucle
-
-    print("Fin du jeu.")
 
 
 

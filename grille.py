@@ -14,7 +14,7 @@ class Grille:
         self.numero_colonne()
 
     def numero_colonne(self):
-        print("   ".join(str(i ) for i in range(7)))
+        print("   ".join(str(i+1 ) for i in range(7)))
 
     def est_colonne_valide(self, colonne):
         return 0 <= colonne < 7 and self.grid[0][colonne].occupant is None    #verifie si on ne choisit pas une colonne qui n'existe pas et on vérifie également qu'il reste une place

@@ -13,6 +13,10 @@ class Jeu:
 
     def changer_joueur(self):
         self.joueur_actuel = self.joueur2 if self.joueur_actuel == self.joueur1 else self.joueur1
+        return self.joueur_actuel
+
+    def obtenir_joueur_actuel(self):
+        return self.joueur_actuel
 
     def jouer(self, colonne):
         if self.grille.est_colonne_valide(colonne):
@@ -33,6 +37,7 @@ class Jeu:
         else:
             print("Colonne invalide. Choisissez une colonne entre 0 et 6.")
             return False
+
 
     def est_victoire(self):
         # Vérification des alignements horizontaux

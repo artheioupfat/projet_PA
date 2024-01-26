@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
 def main():
     jeu = Jeu()
-    fenetre_instance = GameView()
+    #game_view = GameView()
 
 
 

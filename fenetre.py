@@ -37,7 +37,9 @@ class GameView:
         # charger l'image du pion rouge
         self.redChip = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "pion_rouge.png"))
         # Police pour le jeu
-        #self.font = pygame.font.Font("freesansbold.ttf", 15)
+        self.font = pygame.font.Font("freesansbold.ttf", 15)
+
+        self.pions_colonnes = {i: [] for i in range(7)}
 
         jeu = Jeu()
         continuer = True
@@ -50,13 +52,10 @@ class GameView:
                     # Vérifier dans quelle colonne la souris a été cliquée
                     x, y = event.pos
                     colonne_cliquee = self.get_colonne_cliquee(x)
-                    #print(f"Colonne cliquée : {colonne_cliquee}")
-                    self.placer_pion(colonne_cliquee)
-                    jeu.grille.afficher_grille()
-                    print("Colonne clique {colonne_cliquee}")
-                    if jeu.jouer(colonne_cliquee):
-                        jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
-                        break  # Le jeu est terminé, sortir de la boucle
+                    self.placer_pion(colonne_cliquee-1)
+                    jeu.jouer(colonne_cliquee-1)
+                    jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
+                    print(f"Colonne cliquée : {colonne_cliquee}")
 
         pygame.quit()
 
@@ -84,9 +83,23 @@ class GameView:
 
     def placer_pion(self, colonne):
         # Calculer les coordonnées pour placer l'image en bas de la colonne
-        x = colonne * self.colonne + (self.colonne // 2) - (self.yellowChip.get_width() // 2)
-        y = self.size[1] - self.yellowChip.get_height()
+        x = colonne * self.colonne + (self.colonne // 2) - (self.yellowChip.get_width() // 2) + 3
+        #y = self.size[1] - self.yellowChip.get_height()
+
+        # Trouver la position verticale libre dans la colonne
+        positions_verticales = self.pions_colonnes[colonne]
+        hauteur_pion = self.yellowChip.get_height()
+
+        #y = positions_verticales
+        y = self.size[1] - self.yellowChip.get_height() - 10 if not positions_verticales else min(positions_verticales, key=lambda pos: pos[1])[1] - hauteur_pion - 16
+
+        # Ajouter les coordonnées à la liste des pions dans cette colonne
+        self.pions_colonnes[colonne].append((x, y))
+
+        # Afficher tous les pions dans cette colonne
+        for pion_x, pion_y in self.pions_colonnes[colonne]:
+            self.screen.blit(self.yellowChip, (pion_x, pion_y))
 
         # Afficher l'image du pion (jaune pour l'exemple)
-        self.screen.blit(self.yellowChip, (x, y))
+        #self.screen.blit(self.yellowChip, (x, y))
         pygame.display.flip()

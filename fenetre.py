@@ -1,7 +1,7 @@
 import pygame
 import os
 from pygame.locals import *
-
+from jeu import Jeu
 
 class GameView:
     IMAGE_DIRECTORY = "images"
@@ -39,6 +39,7 @@ class GameView:
         # Police pour le jeu
         #self.font = pygame.font.Font("freesansbold.ttf", 15)
 
+        jeu = Jeu()
         continuer = True
         while continuer:
             for event in self.pyGame.event.get():
@@ -51,9 +52,28 @@ class GameView:
                     colonne_cliquee = self.get_colonne_cliquee(x)
                     #print(f"Colonne cliquée : {colonne_cliquee}")
                     self.placer_pion(colonne_cliquee)
+                    jeu.grille.afficher_grille()
+                    print("Colonne clique {colonne_cliquee}")
+                    if jeu.jouer(colonne_cliquee):
+                        jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
+                        break  # Le jeu est terminé, sortir de la boucle
 
         pygame.quit()
 
+
+        '''
+        while True:
+            jeu.grille.afficher_grille()
+
+            # colonne = int(input(f"Joueur {jeu.joueur_actuel.symbole}, choisissez une colonne (0-6) : "))
+            colonne = colonne_cliquee
+            print("Colonne clique {colonne}")
+            if jeu.jouer(colonne):
+                jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
+                break  # Le jeu est terminé, sortir de la boucle
+
+        print("Fin du jeu.")
+        '''
     def get_colonne_cliquee(self, x):
         # Trouver la colonne dans laquelle la souris a été cliquée
         for i, limite in enumerate(self.limites_colonnes):

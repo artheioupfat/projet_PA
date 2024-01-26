@@ -33,16 +33,6 @@ if __name__ == "__main__":
 '''
 
 
-jeu = Jeu()
 game_view = GameView()
-while True:
-    jeu.grille.afficher_grille()
 
-    #colonne = int(input(f"Joueur {jeu.joueur_actuel.symbole}, choisissez une colonne (0-6) : "))
-    colonne = game_view.get_colonne_cliquee()
-    print("Colonne clique {colonne}")
-    if jeu.jouer(colonne):
-        jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
-        break  # Le jeu est terminé, sortir de la boucle
 
-print("Fin du jeu.")

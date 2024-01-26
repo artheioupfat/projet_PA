@@ -5,13 +5,14 @@ from joueur import Joueur
 class Jeu:
     def __init__(self):
         self.grille = Grille()
-        self.joueur1 = Joueur('X')
-        self.joueur2 = Joueur('O')
+        self.joueur1 = Joueur('X','Rouge')
+        self.joueur2 = Joueur('O', 'Jaune')
         self.joueur_actuel = self.joueur1
         self.tour = 1
 
     def changer_joueur(self):
         self.joueur_actuel = self.joueur2 if self.joueur_actuel == self.joueur1 else self.joueur1
+        return self.joueur_actuel
 
     def jouer(self, colonne):
         if self.grille.est_colonne_valide(colonne):

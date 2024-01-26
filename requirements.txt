@@ -1,2 +1,3 @@
-import matplotlib as plt
-import json
+# fichier requirements.txt
+
+pygame==2.0.1

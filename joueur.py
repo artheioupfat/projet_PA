@@ -1,9 +1,8 @@
 
 
 class Joueur:
-    def __init__(self, symbole):
+    def __init__(self, symbole,noms):
         self.symbole = symbole
+        self.noms = noms
 
-    def jouer(self, colonne):
-        # Votre logique de jeu pour le joueur ici
-        pass
+

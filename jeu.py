@@ -6,8 +6,8 @@ from joueur import Joueur
 class Jeu:
     def __init__(self):
         self.grille = Grille()
-        self.joueur1 = Joueur('X')
-        self.joueur2 = Joueur('O')
+        self.joueur1 = Joueur('X','Arthur')
+        self.joueur2 = Joueur('O','Alexis')
         self.joueur_actuel = self.joueur1
         self.tour = 1
 
@@ -15,8 +15,7 @@ class Jeu:
         self.joueur_actuel = self.joueur2 if self.joueur_actuel == self.joueur1 else self.joueur1
         return self.joueur_actuel
 
-    def obtenir_joueur_actuel(self):
-        return self.joueur_actuel
+
 
     def jouer(self, colonne):
         if self.grille.est_colonne_valide(colonne):

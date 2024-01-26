@@ -7,11 +7,8 @@ class GameView:
     IMAGE_DIRECTORY = "images"
 
     def __init__(self):
-        self.ma_classe_jeu = Jeu()
-
-
         self.gamer = 1
-        #self.gameBoard = GameBoard()
+        self.ma_classe_jeu = Jeu()
         self.pyGame = pygame
 
         # initialiser l'interface
@@ -40,7 +37,9 @@ class GameView:
         # charger l'image du pion rouge
         self.redChip = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "pion_rouge.png"))
         # Police pour le jeu
-        #self.font = pygame.font.Font("freesansbold.ttf", 15)
+        self.font = pygame.font.Font("freesansbold.ttf", 15)
+
+        self.pions_colonnes = {i: [] for i in range(7)}
 
         jeu = Jeu()
         continuer = True
@@ -53,31 +52,12 @@ class GameView:
                     # Vérifier dans quelle colonne la souris a été cliquée
                     x, y = event.pos
                     colonne_cliquee = self.get_colonne_cliquee(x)
-                    #print(f"Colonne cliquée : {colonne_cliquee}")
                     self.placer_pion(colonne_cliquee-1)
                     jeu.jouer(colonne_cliquee-1)
-                    jeu.grille.afficher_grille()
-                    print("Colonne clique {colonne_cliquee}")
-
+                    jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
+                    print(f"Colonne cliquée : {colonne_cliquee}")
 
         pygame.quit()
-
-
-        '''
-        while True:
-            jeu.grille.afficher_grille()
-
-            # colonne = int(input(f"Joueur {jeu.joueur_actuel.symbole}, choisissez une colonne (0-6) : "))
-            colonne = colonne_cliquee
-            print("Colonne clique {colonne}")
-            if jeu.jouer(colonne):
-                jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
-                break  # Le jeu est terminé, sortir de la boucle
-
-        print("Fin du jeu.")
-        '''
-
-
 
     def get_colonne_cliquee(self, x):
         # Trouver la colonne dans laquelle la souris a été cliquée
@@ -88,23 +68,33 @@ class GameView:
         return num_colonne_clic
 
     def placer_pion(self, colonne):
-        joueur_actuel = self.ma_classe_jeu.joueur_actuel
-        if joueur_actuel == self.ma_classe_jeu.joueur1:
-            couleur = self.redChip
-        else:
-            couleur = self.yellowChip
-
         # Calculer les coordonnées pour placer l'image en bas de la colonne
-        x = colonne * self.colonne + (self.colonne // 2) - (couleur.get_width() // 2)
-        y = self.size[1] - couleur.get_height()
+        x = colonne * self.colonne + (self.colonne // 2) - (self.yellowChip.get_width() // 2) + 3
 
-        # Afficher l'image du pion
-        self.screen.blit(couleur, (x, y))
+        # Trouver la position verticale libre dans la colonne
+        positions_verticales = self.pions_colonnes[colonne]
+        hauteur_pion = self.yellowChip.get_height()
+
+        y = self.size[1] - self.yellowChip.get_height() - 10 if not positions_verticales else min(positions_verticales, key=lambda pos: pos[1])[1] - hauteur_pion - 16
+
+        # Ajouter les coordonnées à la liste des pions dans cette colonne
+        self.pions_colonnes[colonne].append((x, y))
+
+        # Afficher tous les pions dans cette colonne
+        joueur_actuel = self.ma_classe_jeu.joueur_actuel
+        colonne_a_afficher = self.pions_colonnes[colonne]
+
+        for i, (pion_x, pion_y) in enumerate(colonne_a_afficher):
+            if joueur_actuel == self.ma_classe_jeu.joueur1:
+                couleur = self.redChip
+                if i == len(colonne_a_afficher) - 1:  # Vérifier si c'est le dernier pion ajouté
+                    self.screen.blit(couleur, (pion_x, pion_y))
+            elif joueur_actuel == self.ma_classe_jeu.joueur2:
+                couleur = self.yellowChip
+                if i == len(colonne_a_afficher) - 1:  # Vérifier si c'est le dernier pion ajouté
+                    self.screen.blit(couleur, (pion_x, pion_y))
+
         pygame.display.flip()
 
-        # Appeler la méthode jouer de la classe Jeu
-        self.ma_classe_jeu.jouer(colonne)
-
-        # (Optionnel) Afficher la grille après le coup
-        self.ma_classe_jeu.grille.afficher_grille()
-
+        # Utiliser la fonction changer_joueur existante
+        self.ma_classe_jeu.changer_joueur()

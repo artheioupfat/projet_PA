@@ -1,3 +1,10 @@
-import setuptools
+from setuptools import setup
 
-#pip install pygame
+setup(
+    name='mon_projet',
+    version='1.0',
+    packages=['mon_projet'],
+    install_requires=[
+        'pygame==2.0.1',
+    ],
+)

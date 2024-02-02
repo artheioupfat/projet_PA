@@ -10,6 +10,7 @@ class Jeu:
         self.joueur2 = Joueur('O','Alexis')
         self.joueur_actuel = self.joueur1
         self.tour = 1
+        self.victoire = 0   # tant que victoire = 0 le jeu se poursuivra
 
     def changer_joueur(self):
         self.joueur_actuel = self.joueur2 if self.joueur_actuel == self.joueur1 else self.joueur1
@@ -22,9 +23,11 @@ class Jeu:
             if self.grille.placer_jeton(colonne, self.joueur_actuel):
                 if self.est_victoire():
                     print(f"Le joueur {self.joueur_actuel.symbole} remporte la victoire !")
+                    self.victoire = 1
                     return True
                 elif self.est_match_nul():
                     print("Match nul ! La grille est pleine.")
+                    self.victoire=1
                     return True
                 else:
                     self.tour += 1

@@ -1,7 +1,6 @@
-
-
 from grille import Grille
 from joueur import Joueur
+
 class Jeu:
     def __init__(self):
         self.grille = Grille()
@@ -19,11 +18,9 @@ class Jeu:
         if self.grille.est_colonne_valide(colonne):
             if self.grille.placer_jeton(colonne, self.joueur_actuel):
                 if self.est_victoire():
-                    #print(f"Le joueur {self.joueur_actuel.symbole} remporte la victoire !")
                     self.victoire=1
                     return True
                 elif self.est_match_nul():
-                    #print("Match nul ! La grille est pleine.")
                     self.victoire=1
                     return True
                 else:

@@ -1,5 +1,3 @@
-
-
 class Jeton:
     def __init__(self):
         self.occupant = None

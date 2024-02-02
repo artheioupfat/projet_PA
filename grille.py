@@ -1,6 +1,3 @@
-
-
-
 from jeton import Jeton
 
 class Grille:

@@ -10,6 +10,15 @@ class GameView:
         self.ma_classe_jeu = Jeu()
         self.pyGame = pygame
 
+        # Coordonnées et dimensions de la zone bouton
+        self.button_area_x = 200
+        self.button_area_y = 200
+        self.button_area_width = 100
+        self.button_area_height = 50
+
+        # État du bouton (clicqué ou non)
+        self.button_clicked = False
+
         # initialiser l'interface
         pygame.init()
         # charger l'image du plateau de jeu
@@ -35,7 +44,8 @@ class GameView:
         # Police pour le jeu
         self.font = pygame.font.Font("freesansbold.ttf", 30)
         self.pions_colonnes = {i: [] for i in range(7)}
-
+        #692, 701 taille plateau 2
+        #346, 350,5 milieux plateau 2
         jeu = Jeu()
         continuer = True
         while continuer:
@@ -43,21 +53,34 @@ class GameView:
                 if event.type == QUIT:
                     continuer = False
                 elif event.type == MOUSEBUTTONDOWN:
-                    # Vérifier dans quelle colonne la souris a été cliquée
-                    x, y = event.pos
-                    colonne_cliquee = self.get_colonne_cliquee(x)
-                    self.placer_pion(colonne_cliquee-1)
-                    jeu.jouer(colonne_cliquee-1)
-                    jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
-                    print(f"Colonne cliquée : {colonne_cliquee}")
-                    if jeu.est_victoire():
-                        print(f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !")
-                        message_victoire = self.font.render(f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !", True, (255, 255, 255))  # Couleur du texte : rouge
-                        self.screen.blit(message_victoire, (75, 150))
-                    if jeu.est_match_nul():
-                        print("Match nul ! La grille est pleine.")
-                        message_nul = self.font.render("Match nul ! La grille est pleine !",True, (255, 255, 255))  # Couleur du texte : rouge
-                        self.screen.blit(message_nul, (150, 290))
+
+                    if jeu.victoire == 0:
+                        # Vérifier dans quelle colonne la souris a été cliquée
+                        x, y = event.pos
+                        colonne_cliquee = self.get_colonne_cliquee(x)
+                        self.placer_pion(colonne_cliquee - 1)
+                        jeu.jouer(colonne_cliquee - 1)
+                        jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
+                        print(f"Colonne cliquée : {colonne_cliquee}")
+                        self.bouton_rejouer()
+
+                    else:
+                        if jeu.est_victoire():
+                            print(f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !")
+                            message_victoire = self.font.render(
+                                f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !", True,
+                                (255, 255, 255))  # Couleur du texte : rouge
+                            self.screen.blit(message_victoire, (75, 150))
+                            self.bouton_rejouer()
+                            pygame.display.update()
+                        if jeu.est_match_nul():
+                            print("Match nul ! La grille est pleine.")
+                            message_nul = self.font.render("Match nul ! La grille est pleine !", True,
+                                                           (255, 255, 255))  # Couleur du texte : rouge
+                            self.screen.blit(message_nul, (150, 290))
+                            self.bouton_rejouer()
+                            pygame.display.update()
+
 
         pygame.quit()
 
@@ -100,3 +123,21 @@ class GameView:
 
         # Utiliser la fonction changer_joueur existante
         self.ma_classe_jeu.changer_joueur()
+
+    def bouton_rejouer(self):
+        # Dessiner la zone bouton en vert si non cliquée, en rouge si cliquée
+        couleur = (0, 255, 0)
+        pygame.draw.rect(self.screen, couleur,
+                         (346-75, 350.5-10, 150, 30))
+        message_rejouer = self.font.render(
+            f"REJOUER", True,
+            (255, 255, 255))  # Couleur du texte : rouge
+        self.screen.blit(message_rejouer, (346-75, 350.5-10))
+        pygame.display.flip()
+        #346, 350,5 milieux plateau 2
+
+    '''
+    def clic_sur_bouton_area(self, x, y):
+        return self.button_area_x <= x <= self.button_area_x + self.button_area_width and \
+            self.button_area_y <= y <= self.button_area_y + self.button_area_height
+    '''

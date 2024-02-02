@@ -13,7 +13,7 @@ class GameView:
         # initialiser l'interface
         pygame.init()
         # charger l'image du plateau de jeu
-        self.board_picture = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "plateau.png"))
+        self.board_picture = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "plateau2.png"))
 
         # obtenir la taille du plateau de jeu
         taille_plateau_de_jeu = self.board_picture.get_size()

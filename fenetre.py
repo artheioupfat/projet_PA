@@ -10,12 +10,6 @@ class GameView:
         self.ma_classe_jeu = Jeu()
         self.pyGame = pygame
 
-        # Coordonnées et dimensions de la zone bouton
-        self.button_area_x = 200
-        self.button_area_y = 200
-        self.button_area_width = 100
-        self.button_area_height = 50
-
         # État du bouton (clicqué ou non)
         self.button_clicked = False
 
@@ -49,12 +43,19 @@ class GameView:
         jeu = Jeu()
         continuer = True
         while continuer:
+            message_nul = self.font.render("Puissance 4", True, (255, 0, 0))  # Couleur du texte : Noir
+            self.screen.blit(message_nul, (20, 30))
+            message_nul = self.font.render("Tour du joueur :", True, (255, 255, 255))  # Couleur du texte : Noir
+            self.screen.blit(message_nul, (300, 30))
+
+            pygame.display.update()
             for event in self.pyGame.event.get():
                 if event.type == QUIT:
                     continuer = False
                 elif event.type == MOUSEBUTTONDOWN:
 
                     if jeu.victoire == 0:
+                        self.rouge_jaune()
                         # Vérifier dans quelle colonne la souris a été cliquée
                         x, y = event.pos
                         colonne_cliquee = self.get_colonne_cliquee(x)
@@ -164,3 +165,18 @@ class GameView:
             f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !", True,
             (255, 255, 255))  # Couleur du texte : rouge
         self.screen.blit(message_victoire, (75, 300))
+
+    def rouge_jaune(self):
+        jeu = Jeu()
+        if self.ma_classe_jeu.joueur_actuel == self.ma_classe_jeu.joueur1:  # sert à afficher le nom de la personne qui doit jouer
+            pygame.draw.rect(self.screen, (195, 195, 195,), (550, 30, 120, 40))
+            pygame.display.flip()
+            message_nul = self.font.render(f" {jeu.joueur2.nom}", True, (255, 255, 0))
+            self.screen.blit(message_nul, (560, 30))
+
+        else:
+            pygame.draw.rect(self.screen, (195,195,195), (550, 30, 120, 40))
+            pygame.display.flip()
+            message_nul = self.font.render(f"{jeu.joueur1.nom}", True, (255, 0, 0))
+            self.screen.blit(message_nul, (565, 30))
+        return

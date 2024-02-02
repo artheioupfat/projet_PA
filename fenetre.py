@@ -42,6 +42,9 @@ class GameView:
         while continuer:
             message_nul = self.font.render("Puissance 4", True, (255, 0, 0))  # Couleur du texte : Noir
             self.screen.blit(message_nul, (20, 30))
+            message_nul = self.font.render("Tour du joueur :", True, (255, 0, 0))  # Couleur du texte : Noir
+            self.screen.blit(message_nul, (300,30))
+
             pygame.display.update()
 
             for event in self.pyGame.event.get():
@@ -63,7 +66,7 @@ class GameView:
 
                     else:
                         if jeu.est_victoire():
-                            print(f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire2 !")
+                            print(f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire !")
                             message_victoire = self.font.render(
                                 f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire !", True,
                                 (255, 255, 255))  # Couleur du texte : rouge
@@ -84,16 +87,16 @@ class GameView:
     def rouge_jaune(self):
         jeu = Jeu()
         if self.ma_classe_jeu.joueur_actuel == self.ma_classe_jeu.joueur1:  # sert à afficher le nom de la personne qui doit jouer
-            pygame.draw.rect(self.screen, (51, 51, 51,), (550, 30, 120, 40))
+            pygame.draw.rect(self.screen, (195, 195, 195,), (550, 30, 120, 40))
             pygame.display.flip()
             message_nul = self.font.render(f" {jeu.joueur2.noms}", True, (255, 255, 0))
-            self.screen.blit(message_nul, (550, 30))
+            self.screen.blit(message_nul, (560, 30))
 
         else:
-            pygame.draw.rect(self.screen, (51, 51, 51,), (550, 30, 120, 40))
+            pygame.draw.rect(self.screen, (195,195,195), (550, 30, 120, 40))
             pygame.display.flip()
             message_nul = self.font.render(f"{jeu.joueur1.noms}", True, (255, 0, 0))
-            self.screen.blit(message_nul, (550, 30))
+            self.screen.blit(message_nul, (565, 30))
         return
 
 

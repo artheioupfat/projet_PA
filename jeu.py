@@ -6,8 +6,8 @@ from joueur import Joueur
 class Jeu:
     def __init__(self):
         self.grille = Grille()
-        self.joueur1 = Joueur('X','Arthur')
-        self.joueur2 = Joueur('O','Alexis')
+        self.joueur1 = Joueur('X','Rouge')
+        self.joueur2 = Joueur('O','Jaune')
         self.joueur_actuel = self.joueur1
         self.tour = 1
         self.victoire = 0   # tant que victoire = 0 le jeu se poursuivra
@@ -74,3 +74,5 @@ class Jeu:
                 if cell.occupant is None:
                     return False  # Il y a au moins une cellule vide, le match nul n'est pas atteint
         return True  # Toutes les cellules sont occupées, le match nul est atteint
+
+

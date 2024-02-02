@@ -13,13 +13,14 @@ class GameView:
         # initialiser l'interface
         pygame.init()
         # charger l'image du plateau de jeu
-        self.board_picture = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "plateau2.png"))
+        self.board_picture = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "plateau.png"))
 
         # obtenir la taille du plateau de jeu
         taille_plateau_de_jeu = self.board_picture.get_size()
         print(taille_plateau_de_jeu)
         # stocker cette taille
         self.size = (taille_plateau_de_jeu[0] * 1, taille_plateau_de_jeu[1])
+        self.size_plateau = (692,590)
         self.colonne = taille_plateau_de_jeu[0]/7
         # Définir les limites des colonnes
         self.limites_colonnes = [i * self.colonne for i in range(8)]
@@ -33,18 +34,25 @@ class GameView:
         # charger l'image du pion rouge
         self.redChip = pygame.image.load(os.path.join(GameView.IMAGE_DIRECTORY, "pion_rouge.png"))
         # Police pour le jeu
-        self.font = pygame.font.Font("freesansbold.ttf", 30)
+        self.font = pygame.font.Font("freesansbold.ttf", 35)
         self.pions_colonnes = {i: [] for i in range(7)}
 
         jeu = Jeu()
         continuer = True
         while continuer:
+            message_nul = self.font.render("Puissance 4", True, (255, 0, 0))  # Couleur du texte : Noir
+            self.screen.blit(message_nul, (20, 30))
+            pygame.display.update()
 
             for event in self.pyGame.event.get():
                 if event.type == QUIT:
                     continuer = False
                 elif event.type == MOUSEBUTTONDOWN:
-                    if jeu.victoire == 0:
+                    if jeu.victoire == 0:    #si victoire = 1 le jeu s'arrete pour afficher le message de victoire
+
+                        self.rouge_jaune()
+
+
                         # Vérifier dans quelle colonne la souris a été cliquée
                         x, y = event.pos
                         colonne_cliquee = self.get_colonne_cliquee(x)
@@ -55,19 +63,41 @@ class GameView:
 
                     else:
                         if jeu.est_victoire():
-                            print(f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire !")
-                            message_victoire = self.font.render(f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire !", True, (255, 255, 255))  # Couleur du texte : rouge
-                            self.screen.blit(message_victoire, (75, 150))
+                            print(f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire2 !")
+                            message_victoire = self.font.render(
+                                f"Le joueur {jeu.joueur_actuel.noms} remporte la victoire !", True,
+                                (255, 255, 255))  # Couleur du texte : rouge
+                            self.screen.blit(message_victoire, (50, 150))
                             pygame.display.update()
                         if jeu.est_match_nul():
                             print("Match nul ! La grille est pleine.")
-                            message_nul = self.font.render("Match nul ! La grille est pleine !",True, (255, 255, 255))  # Couleur du texte : rouge
+                            message_nul = self.font.render("Match nul ! La grille est pleine !", True,
+                                                           (255, 255, 255))  # Couleur du texte : rouge
                             self.screen.blit(message_nul, (150, 290))
                             pygame.display.update()
 
 
 
+
+
         pygame.quit()
+    def rouge_jaune(self):
+        jeu = Jeu()
+        if self.ma_classe_jeu.joueur_actuel == self.ma_classe_jeu.joueur1:  # sert à afficher le nom de la personne qui doit jouer
+            pygame.draw.rect(self.screen, (51, 51, 51,), (550, 30, 120, 40))
+            pygame.display.flip()
+            message_nul = self.font.render(f" {jeu.joueur2.noms}", True, (255, 255, 0))
+            self.screen.blit(message_nul, (550, 30))
+
+        else:
+            pygame.draw.rect(self.screen, (51, 51, 51,), (550, 30, 120, 40))
+            pygame.display.flip()
+            message_nul = self.font.render(f"{jeu.joueur1.noms}", True, (255, 0, 0))
+            self.screen.blit(message_nul, (550, 30))
+        return
+
+
+
 
     def get_colonne_cliquee(self, x):
         # Trouver la colonne dans laquelle la souris a été cliquée

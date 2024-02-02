@@ -62,16 +62,18 @@ class GameView:
                         jeu.jouer(colonne_cliquee - 1)
                         jeu.grille.afficher_grille()  # Afficher la grille après la dernière action
                         print(f"Colonne cliquée : {colonne_cliquee}")
-                        self.bouton_rejouer()
-
                     else:
                         if jeu.est_victoire():
                             print(f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !")
-                            message_victoire = self.font.render(
-                                f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !", True,
-                                (255, 255, 255))  # Couleur du texte : rouge
-                            self.screen.blit(message_victoire, (75, 150))
+                            self.message_victoire()
                             self.bouton_rejouer()
+                            # Utilisez une boucle while True pour vérifier en permanence le clic sur le bouton "Rejouer"
+                            while True:
+                                if self.clic_rejouer():
+                                    # Réinitialiser le jeu
+                                    GameView()
+                                    break  # Sortez de la boucle while True après avoir effectué l'action
+
                             pygame.display.update()
                         if jeu.est_match_nul():
                             print("Match nul ! La grille est pleine.")
@@ -79,6 +81,13 @@ class GameView:
                                                            (255, 255, 255))  # Couleur du texte : rouge
                             self.screen.blit(message_nul, (150, 290))
                             self.bouton_rejouer()
+                            # Utilisez une boucle while True pour vérifier en permanence le clic sur le bouton "Rejouer"
+                            while True:
+                                if self.clic_rejouer():
+                                    # Réinitialiser le jeu
+                                    # self.reinitialiser_jeu()
+                                    break  # Sortez de la boucle while True après avoir effectué l'action
+
                             pygame.display.update()
 
 
@@ -100,33 +109,34 @@ class GameView:
         positions_verticales = self.pions_colonnes[colonne]
         hauteur_pion = self.yellowChip.get_height()
 
+
         y = self.size[1] - self.yellowChip.get_height() - 10 if not positions_verticales else min(positions_verticales, key=lambda pos: pos[1])[1] - hauteur_pion - 16
 
-        # Ajouter les coordonnées à la liste des pions dans cette colonne
-        self.pions_colonnes[colonne].append((x, y))
 
-        # Afficher tous les pions dans cette colonne
-        joueur_actuel = self.ma_classe_jeu.joueur_actuel
-        colonne_a_afficher = self.pions_colonnes[colonne]
+        if y >= 110:
+            # Ajouter les coordonnées à la liste des pions dans cette colonne
+            self.pions_colonnes[colonne].append((x, y))
 
-        for i, (pion_x, pion_y) in enumerate(colonne_a_afficher):
-            if joueur_actuel == self.ma_classe_jeu.joueur1:
-                couleur = self.redChip
-                if i == len(colonne_a_afficher) - 1:  # Vérifier si c'est le dernier pion ajouté
-                    self.screen.blit(couleur, (pion_x, pion_y))
-            elif joueur_actuel == self.ma_classe_jeu.joueur2:
-                couleur = self.yellowChip
-                if i == len(colonne_a_afficher) - 1:  # Vérifier si c'est le dernier pion ajouté
-                    self.screen.blit(couleur, (pion_x, pion_y))
+            # Afficher tous les pions dans cette colonne
+            joueur_actuel = self.ma_classe_jeu.joueur_actuel
+            colonne_a_afficher = self.pions_colonnes[colonne]
 
-        pygame.display.flip()
+            for i, (pion_x, pion_y) in enumerate(colonne_a_afficher):
+                if joueur_actuel == self.ma_classe_jeu.joueur1:
+                    couleur = self.redChip
+                    if i == len(colonne_a_afficher) - 1:  # Vérifier si c'est le dernier pion ajouté
+                        self.screen.blit(couleur, (pion_x, pion_y))
+                elif joueur_actuel == self.ma_classe_jeu.joueur2:
+                    couleur = self.yellowChip
+                    if i == len(colonne_a_afficher) - 1:  # Vérifier si c'est le dernier pion ajouté
+                        self.screen.blit(couleur, (pion_x, pion_y))
 
-        # Utiliser la fonction changer_joueur existante
-        self.ma_classe_jeu.changer_joueur()
+            pygame.display.flip()
+
+            self.ma_classe_jeu.changer_joueur()
 
     def bouton_rejouer(self):
-        # Dessiner la zone bouton en vert si non cliquée, en rouge si cliquée
-        couleur = (0, 255, 0)
+        couleur = (195, 195, 195)
         pygame.draw.rect(self.screen, couleur,
                          (346-75, 350.5-10, 150, 30))
         message_rejouer = self.font.render(
@@ -134,10 +144,23 @@ class GameView:
             (255, 255, 255))  # Couleur du texte : rouge
         self.screen.blit(message_rejouer, (346-75, 350.5-10))
         pygame.display.flip()
-        #346, 350,5 milieux plateau 2
 
-    '''
-    def clic_sur_bouton_area(self, x, y):
-        return self.button_area_x <= x <= self.button_area_x + self.button_area_width and \
-            self.button_area_y <= y <= self.button_area_y + self.button_area_height
-    '''
+    def clic_rejouer(self):
+        for event in self.pyGame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                x, y = event.pos
+                print(x,y)
+                if 346 - 75 <= x <= 346 - 75 + 150 and 350.5 - 10 <= y <= 350.5 - 10 + 30:
+                    print("Bouton REJOUER cliqué !")
+                    return True
+        return False
+
+    def message_victoire(self):
+        jeu = Jeu()
+        couleur = (195, 195, 195)
+        pygame.draw.rect(self.screen, couleur,
+                         (75, 300, 550, 35))
+        message_victoire = self.font.render(
+            f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !", True,
+            (255, 255, 255))  # Couleur du texte : rouge
+        self.screen.blit(message_victoire, (75, 300))

@@ -1,3 +1,3 @@
-from fenetre import GameView
+from src.fenetre import GameView
 
 game_view = GameView()

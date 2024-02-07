@@ -1,7 +1,7 @@
 import pygame
 import os
 from pygame.locals import *
-from jeu import Jeu
+from src.jeu import Jeu
 
 class GameView:
     IMAGE_DIRECTORY = "images"
@@ -66,7 +66,7 @@ class GameView:
                     else:
                         if jeu.est_victoire():
                             print(f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !")
-                            self.message_victoire()
+                            self.message_victoire(jeu.joueur_actuel.nom)
                             self.bouton_rejouer()
                             # Utilisez une boucle while True pour vérifier en permanence le clic sur le bouton "Rejouer"
                             while True:
@@ -156,13 +156,13 @@ class GameView:
                     return True
         return False
 
-    def message_victoire(self):
+    def message_victoire(self, joueur):
         jeu = Jeu()
         couleur = (195, 195, 195)
         pygame.draw.rect(self.screen, couleur,
                          (75, 300, 550, 35))
         message_victoire = self.font.render(
-            f"Le joueur {jeu.joueur_actuel.nom} remporte la victoire !", True,
+            f"Le joueur {joueur} remporte la victoire !", True,
             (255, 255, 255))  # Couleur du texte : rouge
         self.screen.blit(message_victoire, (75, 300))
 

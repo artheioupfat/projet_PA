@@ -1,4 +1,4 @@
-from jeton import Jeton
+from src.jeton import Jeton
 
 class Grille:
     def __init__(self):

@@ -1,5 +1,5 @@
-from grille import Grille
-from joueur import Joueur
+from src.grille import Grille
+from src.joueur import Joueur
 
 class Jeu:
     def __init__(self):
